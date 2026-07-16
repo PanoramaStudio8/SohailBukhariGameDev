@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://panoramastudio8.github.io/SohailBukhariGameDev/sitemap.xml
