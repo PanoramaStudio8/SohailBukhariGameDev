@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sohail Bukhari — Senior Unity Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff;
+    --bg-soft:#f5f6fb;
+    --ink:#14161c;
+    --ink-muted:#6b7280;
+    --line:#e7e9f0;
+    --accent:#5b3df5;
+    --accent-soft:#eee9ff;
+    --accent-2:#00b89c;
+    --accent-2-soft:#e2f7f3;
+    --warn:#ff5a5f;
+    --dark:#14161c;
+    --dark-soft:#20222b;
+    --notch:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  h1,h2,h3{font-family:'Sora', sans-serif; font-weight:700; letter-spacing:-0.01em; color:var(--ink);}
+  .mono{font-family:'JetBrains Mono', monospace;}
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.14em;
+    color:var(--accent);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:16px;
+  }
+  .eyebrow::before{content:""; width:18px; height:2px; background:var(--accent); display:inline-block;}
+  .wrap{max-width:1140px; margin:0 auto; padding:0 32px;}
+  section{padding:100px 0;}
+
+  /* angular notch shape used across cards, buttons, badges */
+  .notch{
+    clip-path:polygon(0 0, 100% 0, 100% calc(100% - var(--notch)), calc(100% - var(--notch)) 100%, 0 100%);
+  }
+  .notch-sm{ --notch:8px; }
+
+  .panel{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:#ffffff;
+    border-bottom:1px solid var(--line);
+    transition:box-shadow .25s ease;
+  }
+  header.scrolled{
+    box-shadow:0 8px 24px -16px rgba(20,22,30,0.15);
+  }
+  .nav{
+    max-width:1140px; margin:0 auto; padding:0 32px;
+    height:72px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-brand{display:flex; align-items:center; gap:10px; font-family:'Sora',sans-serif; font-weight:700; font-size:17px;}
+  .nav-mark{
+    width:26px; height:26px; background:var(--accent);
+    clip-path:polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+  }
+  .nav-links{display:flex; gap:34px; align-items:center;}
+  .nav-links a{font-size:14.5px; font-weight:500; color:var(--ink-muted); transition:color .15s;}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-cta{
+    font-family:'Sora', sans-serif; font-size:14px; font-weight:600;
+    background:var(--accent); color:#fff; padding:11px 20px; border-radius:8px;
+    transition:transform .15s, box-shadow .15s;
+  }
+  .nav-cta:hover{transform:translateY(-1px); box-shadow:0 8px 20px rgba(91,61,245,0.28);}
+
+  /* ---------- Hero image carousel ---------- */
+  .carousel{
+    position:relative; width:100%;
+    background:linear-gradient(180deg, #1b1e26 0%, #0f1015 100%);
+  }
+  .carousel-inner{
+    display:grid; grid-template-columns:0.85fr 1.15fr; align-items:stretch;
+    min-height:460px;
+  }
+  .carousel-text{
+    padding:56px 0 56px 32px; display:flex; flex-direction:column; justify-content:center;
+  }
+  .carousel-eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; color:var(--accent-2);
+    text-transform:uppercase; letter-spacing:0.12em; margin-bottom:12px; display:block;
+  }
+  .carousel-text h2{color:#fff; font-size:30px; line-height:1.2; margin-bottom:14px; max-width:16ch;}
+  .carousel-text p{color:#a9adba; font-size:15px; max-width:38ch; margin-bottom:32px;}
+  .carousel-controls{display:flex; align-items:center; gap:16px;}
+  .carousel-dots{display:flex; gap:8px;}
+  .carousel-dot{
+    width:26px; height:3px; background:rgba(255,255,255,0.28); border:none; cursor:pointer;
+    transition:background .2s;
+  }
+  .carousel-dot.active{background:var(--accent-2);}
+  .carousel-arrow{
+    width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,0.22);
+    background:transparent; color:#fff; cursor:pointer; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    transition:background .2s, border-color .2s;
+  }
+  .carousel-arrow:hover{background:rgba(255,255,255,0.1); border-color:var(--accent-2);}
+  .carousel-images{position:relative; overflow:hidden;}
+  .carousel-slide{
+    position:absolute; inset:0; opacity:0;
+    transition:opacity 1s ease;
+    display:flex; align-items:center; justify-content:center;
+    padding:32px 32px 32px 0;
+  }
+  .carousel-slide.active{opacity:1;}
+  .carousel-slide img{
+    max-width:100%; max-height:100%; width:auto; height:auto;
+    object-fit:contain; display:block; border-radius:8px;
+    box-shadow:0 30px 70px -30px rgba(0,0,0,0.6);
+  }
+  @media (max-width:860px){
+    .carousel-inner{grid-template-columns:1fr; min-height:0;}
+    .carousel-text{padding:40px 20px 28px; order:2;}
+    .carousel-text h2{max-width:none; font-size:22px;}
+    .carousel-images{order:1; height:260px;}
+    .carousel-slide{padding:24px 20px;}
+  }
+  @media (max-width:560px){
+    .carousel-images{height:220px;}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{padding:88px 0 0; position:relative; overflow:hidden;}
+  .hero::before{
+    content:"";
+    position:absolute; inset:0; z-index:0;
+    background-image:radial-gradient(circle, #e4e6ef 1px, transparent 1px);
+    background-size:26px 26px;
+    mask-image:linear-gradient(180deg, black, transparent 85%);
+    opacity:0.9;
+  }
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center; position:relative; z-index:1;}
+  .status-line{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:500; color:var(--ink-muted);
+    background:var(--accent-2-soft); border:1px solid #c9ede5; padding:7px 14px 7px 12px; border-radius:20px; margin-bottom:26px;
+  }
+  .status-dot{width:7px; height:7px; border-radius:50%; background:var(--accent-2); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.3;}}
+  .hero h1{font-size:54px; line-height:1.08; margin-bottom:22px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p.lead{font-size:17.5px; color:var(--ink-muted); max-width:46ch; margin-bottom:36px;}
+  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:46px;}
+  .btn{
+    font-family:'Sora', sans-serif; font-size:14.5px; font-weight:600;
+    padding:15px 24px; display:inline-flex; align-items:center; gap:10px;
+    transition:transform .15s, box-shadow .15s, background .15s, color .15s;
+    border:1.5px solid transparent; border-radius:9px;
+  }
+  .btn-primary{background:var(--accent); color:#fff;}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 10px 24px rgba(91,61,245,0.3);}
+  .btn-ghost{border-color:var(--ink); color:var(--ink); background:#fff;}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent);}
+  .hero-stats{display:flex; gap:38px; flex-wrap:wrap;}
+  .hstat b{font-family:'Sora',sans-serif; font-size:25px; display:block;}
+  .hstat span{font-size:11.5px; color:var(--ink-muted); font-family:'JetBrains Mono',monospace; text-transform:uppercase; letter-spacing:0.06em;}
+
+  /* ---------- Frame graph signature ---------- */
+  .graph-card{padding:0; overflow:hidden; box-shadow:0 24px 60px -20px rgba(20,22,30,0.18);}
+  .graph-header{
+    background:var(--dark); color:#fff; padding:12px 18px;
+    display:flex; justify-content:space-between; align-items:center;
+    clip-path:polygon(0 0, 100% 0, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+  }
+  .graph-title{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:#a9adba; text-transform:uppercase; letter-spacing:0.08em;}
+  .fps-readout{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--accent-2); font-weight:600;}
+  .graph-body{padding:24px 22px 22px;}
+  .bars{
+    height:150px; display:flex; align-items:flex-end; gap:3px;
+    border-bottom:1px solid var(--line); padding-bottom:2px;
+  }
+  .bars span{
+    flex:1; background:var(--warn); border-radius:1px 1px 0 0;
+    animation:settle 2.6s ease-out forwards;
+    opacity:0.92;
+  }
+  @keyframes settle{ to { background:var(--accent-2); } }
+  .graph-legend{display:flex; justify-content:space-between; margin-top:10px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-muted);}
+  .graph-foot{display:flex; gap:18px; margin-top:18px; flex-wrap:wrap;}
+  .gf-item{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-muted); display:flex; align-items:center; gap:6px;}
+  .gf-dot{width:7px; height:7px; border-radius:1px;}
+
+  /* ---------- Marquee divider ---------- */
+  .marquee-wrap{
+    background:var(--accent); overflow:hidden; margin-top:64px;
+    border-top:1px solid #4a30d6; border-bottom:1px solid #4a30d6;
+  }
+  .marquee-track{
+    display:flex; gap:0; white-space:nowrap; padding:14px 0;
+    animation:scroll 22s linear infinite;
+    width:max-content;
+  }
+  .marquee-track span{
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600; color:#fff;
+    text-transform:uppercase; letter-spacing:0.08em; display:flex; align-items:center;
+    padding:0 24px; border-right:1px solid rgba(255,255,255,0.25);
+  }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ---------- About ---------- */
+  .about{display:grid; grid-template-columns:0.85fr 1.15fr; gap:48px; align-items:center;}
+  .about-photo{position:relative;}
+  .about-photo-frame{
+    border-radius:10px; overflow:hidden; border:1px solid var(--line);
+    aspect-ratio:3/2; position:relative; box-shadow:0 20px 50px -24px rgba(20,22,30,0.25);
+  }
+  .about-photo-frame img{width:100%; height:100%; object-fit:cover; object-position:78% 22%; display:block;}
+  .about-tagbar{
+    position:absolute; top:16px; left:-1px;
+    background:var(--ink); color:#fff; padding:8px 16px 8px 14px;
+    font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+    clip-path:polygon(0 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  .about-copy h2{font-size:29px; margin-bottom:16px; line-height:1.2;}
+  .about-copy p{color:var(--ink-muted); font-size:15px; margin-bottom:14px; max-width:52ch;}
+  .about-tags{display:flex; gap:10px; flex-wrap:wrap; margin-top:22px;}
+  .about-tag{
+    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500; color:var(--accent);
+    background:var(--accent-soft); padding:7px 13px; border-radius:16px;
+  }
+
+  /* ---------- Trust strip ---------- */
+  .trust{background:var(--bg-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:38px 0;}
+  .trust-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
+  .trust-item{font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:500; color:var(--ink); display:flex; align-items:center; gap:12px;}
+  .trust-icon{
+    width:34px; height:34px; background:var(--accent-soft); color:var(--accent);
+    display:flex; align-items:center; justify-content:center; border-radius:8px; flex-shrink:0;
+  }
+
+  /* ---------- Services ---------- */
+  .section-head{max-width:640px; margin-bottom:52px;}
+  .section-head h2{font-size:34px; margin-bottom:14px;}
+  .section-head p{color:var(--ink-muted); font-size:15.5px;}
+  .services-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .service-card{padding:28px 22px; transition:border-color .15s, transform .15s;}
+  .service-card:hover{border-color:var(--accent); transform:translateY(-3px);}
+  .service-icon{
+    width:42px; height:42px; border-radius:9px; background:var(--accent-soft);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px; color:var(--accent);
+  }
+  .service-card h3{font-size:16.5px; margin-bottom:10px;}
+  .service-card p{font-size:13.5px; color:var(--ink-muted); line-height:1.55;}
+
+  /* ---------- Pipeline / process ---------- */
+  .pipeline{position:relative; padding-top:8px;}
+  .pipeline-track{position:absolute; top:22px; left:0; right:0; height:1px; background:var(--line);}
+  .pipeline-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; position:relative;}
+  .pipe-step{padding:0 4px;}
+  .pipe-num{
+    width:44px; height:44px; background:#fff; border-radius:10px;
+    border:1.5px solid var(--accent); color:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Sora',sans-serif; font-size:15px; font-weight:700;
+    margin-bottom:20px; position:relative; z-index:2;
+  }
+  .pipe-step h3{font-size:15px; margin-bottom:8px;}
+  .pipe-step p{font-size:13px; color:var(--ink-muted); line-height:1.5;}
+
+  /* ---------- Values ---------- */
+  .values{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .value-card{padding:30px; border-left:3px solid var(--accent-2);}
+  .value-card .tag{font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent-2); margin-bottom:12px; display:block;}
+  .value-card h3{font-size:19px; margin-bottom:10px;}
+  .value-card p{color:var(--ink-muted); font-size:14px;}
+
+  /* ---------- Gigs (real service images with HUD headers) ---------- */
+  .gig-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .gig-card{
+    border-radius:10px; border:1px solid var(--line); overflow:hidden;
+    background:#fff; transition:transform .18s, box-shadow .18s;
+  }
+  .gig-card:hover{transform:translateY(-5px); box-shadow:0 20px 40px -20px rgba(20,22,30,0.3);}
+  .gig-header{
+    background:var(--ink); color:#fff; padding:10px 16px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .gig-header .num{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent-2); font-weight:600;}
+  .gig-header .label{font-family:'JetBrains Mono',monospace; font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.08em;}
+  .gig-art{aspect-ratio:16/10; overflow:hidden; background:var(--bg-soft);}
+  .gig-art img{width:100%; height:100%; object-fit:cover; display:block;}
+  .gig-body{padding:20px;}
+  .gig-body h3{font-size:16.5px; margin-bottom:8px;}
+  .gig-body p{font-size:13px; color:var(--ink-muted); line-height:1.5; margin-bottom:14px;}
+  .gig-body .gig-link{font-family:'Sora',sans-serif; font-size:13px; font-weight:600; color:var(--accent); display:inline-flex; align-items:center; gap:6px;}
+  .gig-card:hover .gig-link{gap:9px;}
+  .work-note{
+    margin-top:26px; padding:18px 22px; border:1px dashed var(--line); border-radius:10px; background:var(--bg-soft);
+    font-size:13.5px; color:var(--ink-muted); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+  }
+  .work-note a{color:var(--accent); font-family:'Sora',sans-serif; font-weight:600; font-size:13.5px; white-space:nowrap;}
+
+  /* ---------- CTA / contact ---------- */
+  .cta-panel{
+    padding:68px 56px; text-align:center; position:relative; overflow:hidden;
+    background:var(--dark); border-radius:12px;
+  }
+  .cta-panel::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(91,61,245,0.35) 0%, transparent 60%);
+  }
+  .cta-panel > *{position:relative; z-index:1;}
+  .cta-panel h2{font-size:33px; margin-bottom:16px; color:#fff;}
+  .cta-panel p{color:#a9adba; max-width:52ch; margin:0 auto 32px; font-size:15.5px;}
+  .cta-buttons{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .cta-panel .btn-ghost{border-color:#3a3d4a; color:#fff; background:transparent;}
+  .cta-panel .btn-ghost:hover{border-color:var(--accent-2); color:var(--accent-2);}
+
+  footer{border-top:1px solid var(--line); padding:36px 0;}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;}
+  .footer-row p{font-size:12.5px; color:var(--ink-muted); font-family:'JetBrains Mono',monospace;}
+  .footer-links{display:flex; gap:24px;}
+  .footer-links a{font-size:12.5px; color:var(--ink-muted);}
+  .footer-links a:hover{color:var(--accent);}
+
+  @media (max-width:860px){
+    .hero-grid{grid-template-columns:1fr;}
+    .about{grid-template-columns:1fr;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .pipeline-grid{grid-template-columns:repeat(2,1fr); row-gap:32px;}
+    .pipeline-track{display:none;}
+    .values{grid-template-columns:1fr;}
+    .gig-grid{grid-template-columns:1fr 1fr;}
+    .trust-grid{grid-template-columns:repeat(2,1fr); row-gap:16px;}
+    .nav-links{display:none;}
+    .hero h1{font-size:38px;}
+    .cta-panel{padding:48px 24px;}
+  }
+  @media (max-width:560px){
+    .services-grid{grid-template-columns:1fr;}
+    .gig-grid{grid-template-columns:1fr;}
+    .hero{padding:60px 0 0;}
+    section{padding:64px 0;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="nav-brand"><span class="nav-mark"></span>Sohail Bukhari</div>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="nav-cta" href="https://www.fiverr.com/users/sohail_bukhari/portfolio" target="_blank" rel="noopener">Hire on Fiverr</a>
+  </div>
+</header>
+
+<div class="carousel" id="carousel">
+  <div class="wrap carousel-inner">
+    <div class="carousel-text">
+      <span class="carousel-eyebrow">iOS builds &amp; publishing</span>
+      <h2>Fix Xcode errors, ship App Store ready</h2>
+      <p>Build failures, code signing, and plugin conflicts resolved end to end.</p>
+      <div class="carousel-controls">
+        <button class="carousel-arrow prev" id="carousel-prev" aria-label="Previous slide">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="carousel-dots" id="carousel-dots"></div>
+        <button class="carousel-arrow next" id="carousel-next" aria-label="Next slide">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="carousel-images">
+      <div class="carousel-slide active">
+        <img src="assets/gig-ios.png" alt="iOS builds and publishing">
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/gig-fullgame.png" alt="Full Unity game development">
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/gig-update.png" alt="Unity version upgrades">
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/gig-bugfix.png" alt="Unity bug fixing">
+      </div>
+      <div class="carousel-slide">
+        <img src="assets/gig-anime.png" alt="Android and iOS game development">
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- WORK / GIGS -->
+  <section id="work">
+    <div class="wrap">
+      <div class="eyebrow">Services in action</div>
+      <div class="section-head">
+        <h2>What clients hire me for</h2>
+        <p>A look at the core services — full case studies and playable builds are on my Fiverr portfolio.</p>
+      </div>
+      <div class="gig-grid">
+        <div class="gig-card">
+          <div class="gig-header"><span class="num">01</span><span class="label">iOS Builds</span></div>
+          <div class="gig-art"><img src="assets/gig-ios.png" alt="Fix Unity bugs in Xcode and build for the App Store"></div>
+          <div class="gig-body">
+            <h3>Fix &amp; build your iOS game from Unity</h3>
+            <p>Xcode build errors, code signing, plugin conflicts — resolved and shipped App Store ready.</p>
+            <a class="gig-link" href="https://www.fiverr.com/s/rEW6plP" target="_blank" rel="noopener">View gig →</a>
+          </div>
+        </div>
+        <div class="gig-card">
+          <div class="gig-header"><span class="num">02</span><span class="label">Upgrades</span></div>
+          <div class="gig-art"><img src="assets/gig-update.png" alt="Update a Unity game to a newer engine version"></div>
+          <div class="gig-body">
+            <h3>Update Unity games to a newer version</h3>
+            <p>Compatibility fixes and build issues resolved when moving a project to a newer Unity release, Android &amp; iOS.</p>
+            <a class="gig-link" href="https://www.fiverr.com/s/rEW6plP" target="_blank" rel="noopener">View gig →</a>
+          </div>
+        </div>
+        <div class="gig-card">
+          <div class="gig-header"><span class="num">03</span><span class="label">Full Development</span></div>
+          <div class="gig-art"><img src="assets/gig-fullgame.png" alt="Full Unity game development for Android and iOS"></div>
+          <div class="gig-body">
+            <h3>Develop your Android &amp; iOS game</h3>
+            <p>From concept to store-ready build — cross-platform development, IAP, ads, and plugin integration.</p>
+            <a class="gig-link" href="https://www.fiverr.com/s/rEW6plP" target="_blank" rel="noopener">View gig →</a>
+          </div>
+        </div>
+      </div>
+      <div class="work-note">
+        <span>Full portfolio, playable builds, and client reviews are on Fiverr.</span>
+        <a href="https://www.fiverr.com/users/sohail_bukhari/portfolio" target="_blank" rel="noopener">View full portfolio →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="status-line"><span class="status-dot"></span>Available for new Unity projects</div>
+        <h1>Games that run smooth,<br>ship on time, and <span>make money.</span></h1>
+        <p class="lead">Senior Unity developer, 10+ years shipping games across genres. I build for performance and code quality first — because a game that stutters or slips its deadline loses players and budget alike.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="https://www.fiverr.com/s/rEW6plP" target="_blank" rel="noopener">Start a project →</a>
+          <a class="btn btn-ghost" href="#work">View expertise</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hstat"><b>10+</b><span>Years in Unity</span></div>
+          <div class="hstat"><b>Multi</b><span>Genres shipped</span></div>
+          <div class="hstat"><b>iOS·Android·PC</b><span>Cross‑platform</span></div>
+        </div>
+      </div>
+
+      <div class="panel graph-card">
+        <div class="graph-header">
+          <span class="graph-title">frame_time_ms · session</span>
+          <span class="fps-readout">60 FPS · Stable</span>
+        </div>
+        <div class="graph-body">
+          <div class="bars" id="bars"></div>
+          <div class="graph-legend"><span>0s</span><span>optimization pass</span><span>now</span></div>
+          <div class="graph-foot">
+            <div class="gf-item"><span class="gf-dot" style="background:var(--warn)"></span>Unoptimized build</div>
+            <div class="gf-item"><span class="gf-dot" style="background:var(--accent-2)"></span>Delivered build</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee-wrap">
+      <div class="marquee-track">
+        <span>Cross-platform development</span>
+        <span>In-app purchases</span>
+        <span>Ads &amp; monetization</span>
+        <span>Third-party plugins</span>
+        <span>10+ years in Unity</span>
+        <span>Cross-platform development</span>
+        <span>In-app purchases</span>
+        <span>Ads &amp; monetization</span>
+        <span>Third-party plugins</span>
+        <span>10+ years in Unity</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="wrap about">
+      <div class="about-photo">
+        <div class="about-photo-frame">
+          <img src="assets/about-photo.png" alt="Sohail Bukhari, Unity developer">
+        </div>
+        <div class="about-tagbar">Developer</div>
+      </div>
+      <div class="about-copy">
+        <div class="eyebrow">About</div>
+        <h2>10+ years turning game ideas into shipped, working builds</h2>
+        <p>I'm Sohail Bukhari, a senior Unity developer. Over more than a decade I've built games across many different genres — and learned that the two things clients actually feel are performance and reliability.</p>
+        <p>Every project I take on gets the same standard: smooth frame rates, clean maintainable code, and delivery on the date I commit to. Send me your idea and let's talk through how to build it right.</p>
+        <div class="about-tags">
+          <span class="about-tag">Cross-platform</span>
+          <span class="about-tag">In-app purchases</span>
+          <span class="about-tag">Ads &amp; monetization</span>
+          <span class="about-tag">Third-party plugins</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust">
+    <div class="wrap">
+      <div class="trust-grid">
+        <div class="trust-item"><span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg></span>Performance-first engineering</div>
+        <div class="trust-item"><span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span>On-time delivery</div>
+        <div class="trust-item"><span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>Clean, maintainable code</div>
+        <div class="trust-item"><span class="trust-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></span>Direct, responsive comms</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="eyebrow">Expertise</div>
+      <div class="section-head">
+        <h2>What I bring to a Unity project</h2>
+        <p>Ten-plus years across genres has one throughline: the game has to run well, earn well, and land when I say it will.</p>
+      </div>
+      <div class="services-grid">
+        <div class="panel service-card">
+          <div class="service-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M9 4v16"/></svg></div>
+          <h3>Cross-platform development</h3>
+          <p>Single codebase, tuned for iOS, Android, and PC — consistent behavior and performance on every target device.</p>
+        </div>
+        <div class="panel service-card">
+          <div class="service-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+          <h3>In-app purchases</h3>
+          <p>Secure, tested IAP flows — consumables, subscriptions, and store validation implemented so purchases never silently fail.</p>
+        </div>
+        <div class="panel service-card">
+          <div class="service-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <h3>Ads &amp; monetization</h3>
+          <p>Ad network integration and monetization strategy balanced against retention, so revenue doesn't cost you players.</p>
+        </div>
+        <div class="panel service-card">
+          <div class="service-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2 4 12l4 2-1 8 10-10-4-2z"/></svg></div>
+          <h3>Third-party plugins</h3>
+          <p>Integration of analytics, backend, and asset-store tooling — wired in cleanly without dragging down build performance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS / PIPELINE -->
+  <section id="process">
+    <div class="wrap">
+      <div class="eyebrow">Build pipeline</div>
+      <div class="section-head">
+        <h2>How a project moves from brief to build</h2>
+        <p>A straight line from your idea to a shipped, optimized game — no scope surprises along the way.</p>
+      </div>
+      <div class="pipeline">
+        <div class="pipeline-track"></div>
+        <div class="pipeline-grid">
+          <div class="pipe-step">
+            <div class="pipe-num">01</div>
+            <h3>Discuss</h3>
+            <p>Send your idea — genre, platform, and monetization goals. We scope it together.</p>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-num">02</div>
+            <h3>Prototype</h3>
+            <p>Core mechanics built first, so the fun is proven before full production starts.</p>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-num">03</div>
+            <h3>Build</h3>
+            <p>Full development with clean architecture, ready for content and features to scale.</p>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-num">04</div>
+            <h3>Optimize</h3>
+            <p>Profiling pass on every target device — frame time, memory, and load times tuned.</p>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-num">05</div>
+            <h3>Ship &amp; support</h3>
+            <p>Store submission and delivery on schedule, with support after launch.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Why it works</div>
+      <div class="section-head">
+        <h2>Performance and quality, non-negotiable</h2>
+        <p>These aren't taglines — they're the two things I check before a build ever leaves my hands.</p>
+      </div>
+      <div class="values">
+        <div class="panel value-card">
+          <span class="tag">Performance</span>
+          <h3>Every build is profiled, not just tested</h3>
+          <p>Frame time, draw calls, and memory get checked on real target hardware — not assumed from the editor. A smooth game keeps players in it.</p>
+        </div>
+        <div class="panel value-card">
+          <span class="tag">Code quality</span>
+          <h3>Architecture built to be handed off</h3>
+          <p>Readable, modular code that another developer — or future you — can extend without untangling it first.</p>
+        </div>
+        <div class="panel value-card">
+          <span class="tag">Delivery</span>
+          <h3>On-time means on-time</h3>
+          <p>Milestones are set realistically up front, then hit — so your launch date, ad spend, and store listing plans stay on track.</p>
+        </div>
+        <div class="panel value-card">
+          <span class="tag">Genre range</span>
+          <h3>Not locked to one type of game</h3>
+          <p>Years across different genres means the right architecture gets picked for your game, not whichever one I know best.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="cta-panel">
+        <h2>Have a game idea? Let's build it right.</h2>
+        <p>Send over the concept — genre, platform, and what "done" looks like for you. I'll tell you honestly what it takes to build it well.</p>
+        <div class="cta-buttons">
+          <a class="btn btn-primary" href="https://www.fiverr.com/s/rEW6plP" target="_blank" rel="noopener">Start a project on Fiverr →</a>
+          <a class="btn btn-ghost" href="https://www.fiverr.com/users/sohail_bukhari/portfolio" target="_blank" rel="noopener">See full profile</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <p>© 2026 Sohail Bukhari — Senior Unity Developer</p>
+    <div class="footer-links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#work">Work</a>
+      <a href="https://www.fiverr.com/users/sohail_bukhari/portfolio" target="_blank" rel="noopener">Fiverr</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Smooth header: adds shadow/border only once the page has scrolled
+  const headerEl = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    headerEl.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive:true });
+</script>
+
+<script>
+  // Hero image carousel: auto-rotates through gig images with matching captions
+  const slidesData = [
+    { eyebrow:"iOS builds & publishing", title:"Fix Xcode errors, ship App Store ready", body:"Build failures, code signing, and plugin conflicts resolved end to end." },
+    { eyebrow:"Full game development", title:"Concept to store-ready build", body:"Cross-platform development, IAP, ads, and plugin integration handled end to end." },
+    { eyebrow:"Version upgrades", title:"Move your Unity project forward safely", body:"Compatibility fixes and build issues resolved on a newer Unity release." },
+    { eyebrow:"Bug fixing", title:"Clean fixes, fast turnaround", body:"Unity bugs tracked down and resolved without breaking what already works." },
+    { eyebrow:"Android & iOS development", title:"Cross-platform builds that perform", body:"One codebase tuned for consistent performance on every device." }
+  ];
+  const carousel = document.getElementById('carousel');
+  const slideEls = carousel.querySelectorAll('.carousel-slide');
+  const dotsEl = document.getElementById('carousel-dots');
+  const eyebrowEl = carousel.querySelector('.carousel-eyebrow');
+  const titleEl = carousel.querySelector('.carousel-text h2');
+  const bodyEl = carousel.querySelector('.carousel-text p');
+  let current = 0;
+  let timer;
+
+  slidesData.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Show slide ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
+  });
+  const dotEls = dotsEl.querySelectorAll('.carousel-dot');
+
+  function goTo(i) {
+    slideEls[current].classList.remove('active');
+    dotEls[current].classList.remove('active');
+    current = i;
+    slideEls[current].classList.add('active');
+    dotEls[current].classList.add('active');
+    const d = slidesData[current];
+    eyebrowEl.textContent = d.eyebrow;
+    titleEl.textContent = d.title;
+    bodyEl.textContent = d.body;
+  }
+
+  function next() { goTo((current + 1) % slidesData.length); }
+  function prev() { goTo((current - 1 + slidesData.length) % slidesData.length); }
+
+  document.getElementById('carousel-next').addEventListener('click', () => { next(); resetTimer(); });
+  document.getElementById('carousel-prev').addEventListener('click', () => { prev(); resetTimer(); });
+
+  function resetTimer() {
+    if (reduceMotionCheck()) return;
+    clearInterval(timer);
+    timer = setInterval(next, 4500);
+  }
+  function reduceMotionCheck() { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+
+  const reduceMotion = reduceMotionCheck();
+  if (!reduceMotion) {
+    timer = setInterval(next, 4500);
+    carousel.addEventListener('mouseenter', () => clearInterval(timer));
+    carousel.addEventListener('mouseleave', () => { timer = setInterval(next, 4500); });
+  }
+</script>
+
+<script>
+  // Build the frame-time bar graph: starts chaotic (red) then settles into a stable band (teal)
+  const barsEl = document.getElementById('bars');
+  const COUNT = 56;
+  for (let i = 0; i < COUNT; i++) {
+    const bar = document.createElement('span');
+    const progress = i / COUNT;
+    const chaos = Math.max(0, 1 - progress * 1.8);
+    const base = 30 + Math.random() * 20;
+    const spike = chaos * (Math.random() * 90);
+    const height = Math.min(100, base + spike);
+    bar.style.height = height + '%';
+    bar.style.animationDelay = (progress * 1.4) + 's';
+    if (progress > 0.55) {
+      bar.style.background = 'var(--accent-2)';
+      bar.style.animation = 'none';
+    }
+    barsEl.appendChild(bar);
+  }
+</script>
+
+</body>
+</html>
